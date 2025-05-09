@@ -1,0 +1,52 @@
+#include<stdio.h> 
+void main() 
+{ 
+    int mincost = 0, cost[10][10], n, i, j, visited[10], ne, a, b, min, u, v; 
+    printf("Enter the number of vertices\n"); 
+    scanf("%d", &n); 
+    printf("Enter the cost matrix\n"); 
+    // Reading the cost adjacency matrix 
+    for(i = 1; i <= n; i++) 
+        for(j = 1; j <= n; j++) 
+        { 
+            scanf("%d", &cost[i][j]); 
+            // Replace 0s with a large number (999) to represent no edge 
+            if(cost[i][j] == 0) 
+                cost[i][j] = 999; 
+        } 
+ 
+    // Initialize all vertices except the first as unvisited 
+    for(i = 2; i <= n; i++) 
+        visited[i] = 0; 
+    visited[1] = 1; // Start from the first vertex 
+ 
+    ne = 1; // Number of edges selected initially is 1 
+ 
+    // Loop until we select n-1 edges 
+    while(ne < n) 
+    { 
+        min = 999; // Initialize minimum value to a large number 
+        // Find the edge with minimum cost among the visited vertices 
+        for(i = 1; i <= n; i++) 
+            for(j = 1; j <= n; j++) 
+                if(cost[i][j] < min) 
+                    if(visited[i] == 0) // Skip if starting vertex is unvisited 
+                        continue; 
+                    else 
+                    { 
+                        min = cost[i][j]; 
+                        a = u = i; 
+                        b = v = j; 
+                    } 
+        // If either of the vertices is unvisited, select the edge 
+        if(visited[u] == 0 || visited[v] == 0) 
+        { 
+            printf("%d edge (%d,%d) = %d\n", ne++, a, b, min); 
+            mincost += min; 
+            visited[v] = 1; // Mark the new vertex as visited 
+        } 
+        // Remove the selected edge by setting its cost to a large value 
+        cost[a][b] = cost[b][a] = 999; 
+    } 
+    printf("\nThe minimum cost of spanning tree is %d\n", mincost); 
+}
