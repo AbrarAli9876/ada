@@ -1,0 +1,61 @@
+#include <stdio.h> 
+// Global variables 
+int a, b, i, j, u, v, n; 
+int visited[10], edge = 1, min, mincost = 0, cost[10][10]; 
+ 
+// Function to implement Kruskal's algorithm 
+void kruskal(int n, int cost[10][10])  
+{ 
+    printf("The edges of the spanning tree are:\n"); 
+ 
+    while(edge < n) // A spanning tree has (n-1) edges 
+    { 
+        // Find the edge with the minimum cost 
+        for(i = 1, min = 999; i <= n; i++) 
+            for(j = 1; j <= n; j++) 
+                if(cost[i][j] < min) 
+                { 
+                    min = cost[i][j]; 
+                    a = u = i; 
+                    b = v = j; 
+                } 
+ 
+        // Find the parent of vertex u 
+        while(visited[u]) 
+            u = visited[u]; 
+ 
+        // Find the parent of vertex v 
+        while(visited[v]) 
+            v = visited[v]; 
+ 
+        // If u and v are not connected, include this edge in the spanning tree 
+        if(u != v) 
+        { 
+            edge++; 
+            printf("\nEdge (%d,%d) = %d", a, b, min); 
+            mincost += min; 
+            visited[v] = u; // Union operation: connect v to u 
+        } 
+ 
+        // Remove the selected edge by setting its cost to a large number 
+        cost[a][b] = cost[b][a] = 999; 
+    } 
+ 
+    printf("\nThe minimum cost = %d\n", mincost); 
+} 
+ 
+int main() 
+{ 
+    printf("Enter the number of vertices:\n"); 
+    scanf("%d", &n); 
+ 
+    printf("Enter the cost adjacency matrix:\n"); 
+    // Input the adjacency matrix 
+    for(i = 1; i <= n; i++) 
+        for(j = 1; j <= n; j++) 
+            scanf("%d", &cost[i][j]); 
+ 
+// Call the Kruskal function to find MST 
+kruskal(n, cost); 
+return 0; 
+}
